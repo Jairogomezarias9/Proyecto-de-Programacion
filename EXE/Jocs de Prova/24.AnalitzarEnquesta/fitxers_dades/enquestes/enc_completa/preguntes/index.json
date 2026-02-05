@@ -1,0 +1,27 @@
+[
+    {
+        "id": "p1",
+        "text": "Alçada (cm)?",
+        "tipus": "NUMERICA"
+    },
+    {
+        "id": "p2",
+        "text": "Quina és la teva professió?",
+        "tipus": "TEXT_LLIURE"
+    },
+    {
+        "id": "p3",
+        "text": "Com valoras la teva salut?",
+        "tipus": "QUALITATIVA_ORDENADA"
+    },
+    {
+        "id": "p4",
+        "text": "Provincia",
+        "tipus": "QUALITATIVA_NO_ORDENADA_SIMPLE"
+    },
+    {
+        "id": "p5",
+        "text": "Quins esports practiques?",
+        "tipus": "QUALITATIVA_NO_ORDENADA_MULTIPLE"
+    }
+]

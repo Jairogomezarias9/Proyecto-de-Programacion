@@ -1,0 +1,138 @@
+# Joc de Prova - Cas d'ús #7 Contestar Enquesta
+
+Objecte de la prova:
+Cas d'ús: Contestar Enquesta.
+També es prova importar enquesta indirectament.
+Es prova la funcionalitat de contestar una enquesta al sistema a través de la interfície gràfica, verificant tant l'èxit de l'operació com la gestió d'errors.
+
+Fitxers de dades necessaris:
+PREPARACIÓ DE L'ENTORN (OBLIGATORI):
+   Abans d'executar les proves, cal copiar els fitxers de dades preparats:
+   1. Tancar l'aplicació si està oberta
+   2. Copiar la carpeta "fitxers_necessaris/dades/" al directori FONTS/
+      - Windows: xcopy /E /I "fitxers_necessaris\dades" "..\..\..\..\FONTS\dades"
+      - Linux/Mac: cp -r fitxers_necessaris/dades ../../../../FONTS/
+   3. Tornar a iniciar l'aplicació
+
+Usuari preexistent per a les proves:
+   - Username: "TestUser1"
+   - Password: "password123"
+
+   - Username: "TestUser2"
+   - Password: "password123"
+
+Estructura dels fitxers de dades preparats:
+- dades/enquestes/index.json: Índex amb l'enquesta1 preexistent (per a prova #5)
+- dades/enquestes/enc_completa/: Carpeta amb les dades de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/index.json: Índex amb les preguntes de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p1.json: Pregunta 1 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p2.json: Pregunta 2 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p3.json: Pregunta 3 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p4.json: Pregunta 4 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p5.json: Pregunta 5 de l'enquesta1
+- dades/usuaris/index.json: Índex amb l'usuari "TestUser1" i "TestUser2"
+- dades/usuaris/TestUser1.json: Fitxer de l'usuari preexistent per iniciar sessió
+- dades/usuaris/TestUser2.json: Fitxer de l'usuari preexistent per iniciar sessió
+
+El sistema utilitza internament per a la persistència:
+- respostes/index.json: Per emmagatzemar la llista de respostes i verificar duplicats. Emmagatzema objectes de la classe Resposta.
+- enquestes/enc_completa/enquesta.json: Per emmagatzemar els participants que responen a la enquesta
+
+Valors estudiats:
+Aquest fitxer es troba a aquesta carpeta, si no el tens ja importa'l amb importar enquesta.
+
+Es realitzen proves de caixa negra (Black Box) centrades en les particions d'equivalència i valors límit definits per les regles de negoci del domini.
+
+Conjunts de dades de comportament homogeni:
+1. Contestar enquesta vàlida (Cas d'èxit): 
+   1. Login amb TestUser1, Contrasenya: password123.
+   2. Clic al botó "Respondre Enquesta".
+   3. Selecciona l'enquesta enc_completa: Dades de la persona per a contestar-la.
+   4. Introdueix les respostes a les preguntes amb valors:
+      - Alçada: "180"
+      - Quants anys tens?: "20"
+      - Com valoras la teva salut?: "Bona"
+      - Provincia: "Barcelona"
+      - Quins esports practiques?: "Futbol, Baloncesto"
+   5. Clic al botó "Enviar Respostes".
+   6. Resultat esperat: Aparició de finestra de confirmació amb missatge d'èxit.
+
+2. Curs alternatiu: Contestar enquesta i cancel·lar enviament:
+   1. Login amb TestUser1, Contrasenya: password123.
+   2. Clic al botó "Respondre Enquesta".
+   3. Selecciona l'enquesta enc_completa: Dades de la persona per a contestar-la.
+   4. Introdueix les respostes a les preguntes amb valors:
+      - Alçada: "180"
+      - Quants anys tens?: "20"
+      - Com valoras la teva salut?: "Bona"
+      - Provincia: "Barcelona"
+      - Quins esports practiques?: "Futbol, Baloncesto"
+   5. Clic al botó "Cancel·lar".
+   6. Resultat esperat: El sistema no desa la resposta i torna a la pantalla inicial.
+
+3. Cas d'error: Usuari ja ha respost a l'enquesta(valors vàlids):
+   1. Login amb TestUser1, Contrasenya: password123.
+   2. Clic al botó "Respondre Enquesta".
+   3. Selecciona l'enquesta enc_completa: Dades de la persona per a contestar-la.
+   4. Introdueix les respostes a les preguntes amb valors:
+      - Alçada: "200"
+      - Quants anys tens?: "21"
+      - Com valoras la teva salut?: "Bona"
+      - Provincia: "Barcelona"
+      - Quins esports practiques?: "Futbol"
+   5. Clic al botó "Enviar Respostes".
+   6. Resultat esperat: Error indicant que l'usuari ja ha contestat la enquesta.
+
+A partir d'aquí l'usuari es TestUser2.json:
+
+4. Cas d'error: Resposta a pregunta de tipus numerica invalida (Valors límit/invàlids):
+   1. Login amb TestUser2, Contrasenya: password123.
+   2. Clic al botó "Respondre Enquesta".
+   3. Selecciona l'enquesta enc_completa: Dades de la persona per a contestar-la.
+   4. Introdueix les respostes a les preguntes amb valors:
+      - Alçada: "200"
+      - Quants anys tens?: "250"
+      - Com valoras la teva salut?: "Bona"
+      - Provincia: "Barcelona"
+      - Quins esports practiques?: "Futbol"
+   5. Clic al botó "Enviar Respostes".
+   6. Resultat esperat: El valor de la pregunta "Quants anys tens?" es canvia al valor minim, 0 en aquest cas.
+
+5. Cas d'error: Resposta a pregunta tipus qualitativa multiple invalida (Valors límit/invàlids):
+   1. Login amb TestUser2, Contrasenya: password123.
+   2. Clic al botó "Respondre Enquesta".
+   3. Selecciona l'enquesta enc_completa: Dades de la persona per a contestar-la.
+   4. Introdueix les respostes a les preguntes amb valors:
+      - Alçada: "200"
+      - Quants anys tens?: "21"
+      - Com valoras la teva salut?: "Bona"
+      - Provincia: "Barcelona"
+      - Quins esports practiques?: "Futbol, Baloncesto, Quidditch"
+   5. Clic al botó "Enviar Respostes".
+   6. Resultat esperat: Error indicant que la pregunta tipus qualitativa multiple és invàlida i no s'ha registrat la resposta.
+
+6. Cas d'error:Camps buits o nuls:
+   1. Login amb TestUser2, Contrasenya: password123.
+   2. Clic al botó "Respondre Enquesta".
+   3. Selecciona l'enquesta enc_completa: Dades de la persona per a contestar-la.
+   4. Introdueix les respostes a les preguntes amb valors:
+      - Alçada: ""
+      - Quants anys tens?: "" (es el minim i per defecte ja té valor)
+      - Com valoras la teva salut?: "" (es la resposta per defecte i ja té valor)
+      - Provincia: "" (es la resposta per defecte i ja té valor)
+      - Quins esports practiques?: ""
+   5. Clic al botó "Enviar Respostes".
+   6. Resultat esperat: Error indicant que s'han de contestar a totes les preguntes i no s'ha registrat la resposta.
+
+Efectes estudiats:
+- Interacció amb la GUI: 
+    - Introducció de text als camp "Alçada" i "Quants anys tens?".
+    - Selecció d'opcions als camps "Com valoras la teva salut?", "Provincia" i "Quins esports practiques?".
+
+- Accions: Clic al botó "Respondre Enquesta", "Enviar Respostes", "Cancel·lar" i "Acceptar".
+
+- Feedback visual: 
+    - Aparició de finestres emergents (pop-ups) o etiquetes de text amb missatges d'èxit ("Enquesta contestada correctament!").
+    - Aparició de missatges d'error descriptius quan fallen les validacions.
+
+- Persistència: Verificació que la nova resposta s'ha afegit correctament al fitxer de persistència després de l'operació exitosa.

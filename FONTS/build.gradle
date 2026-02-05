@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'edu.upc.prop.clusterxx'
+version = '1.0-SNAPSHOT'
+
+// Define los source sets correctamente
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+ext {
+    javaMainClass = 'edu.upc.prop.clusterxx.Main'
+}
+
+application {
+    mainClass = javaMainClass
+}
+
+jar {
+    // Define el nombre del archivo
+    archiveFileName = 'GestorEnquestes.jar'
+    
+    // Define el destino (sube un nivel si EXE está fuera de FONTS, o déjalo así si está dentro)
+    destinationDirectory = file("../EXE") 
+
+    manifest {
+        attributes(
+            'Main-Class': 'edu.upc.prop.clusterxx.Main' 
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.json:json:20231013'
+    testImplementation 'junit:junit:4.13.1'
+    
+}
+
+javadoc {
+    destinationDir = file("../DOCS/javadoc")
+    options.encoding = 'UTF-8'
+    options.docEncoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    failOnError = false
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+tasks.named('run', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+}
+
+// Tareas para ejecutar drivers
+
+

@@ -1,0 +1,126 @@
+# Joc de Prova - Cas d'us #1 Registrar Usuari
+
+Objecte de la prova:
+Cas d'us: Registrar Usuari.
+Es prova la funcionalitat de crear un nou compte d'usuari al sistema a traves de la interficie grafica, verificant tant l'exit de l'operacio com la gestio d'errors.
+
+Fitxers de dades necessaris:
+No es requereixen fitxers d'entrada especifics per iniciar la prova, ja que les dades s'introdueixen manualment a traves dels camps de text de la vista.
+
+El sistema utilitza internament per a la persistencia:
+- usuaris/index.json: Per emmagatzemar la llista d'usuaris i verificar duplicats. Emmagatzema objectes de la classe Usuari.
+
+Valors estudiats:
+Es realitzen proves de caixa negra (Black Box) centrades en les particions d'equivalencia i valors limit definits per les regles de negoci del domini.
+
+Conjunts de dades de comportament homogeni:
+1. Registre valid (Cas d'exit):
+   - Usuari: "TestUser1" (Longitud >= 3, caracters valids, no existent)
+   - Contrasenya: "password123" (Longitud >= 4)
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: TestUser1.
+      4. Introduir contrasenya: password123.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'exit "Usuari registrat correctament!".
+   - Resultat esperat: Creacio de l'usuari i missatge d'exit.
+
+2. Validacio de longitud minima d'usuari (Valor limit):
+   - Usuari: "abc" (Longitud = 3, valor minim valid)
+   - Contrasenya: "pass1234"
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: abc.
+      4. Introduir contrasenya: pass1234.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'exit.
+   - Resultat esperat: Creacio de l'usuari i missatge d'exit.
+
+3. Validacio de longitud minima de contrasenya (Valor limit):
+   - Usuari: "TestUser3"
+   - Contrasenya: "1234" (Longitud = 4, valor minim valid)
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: TestUser3.
+      4. Introduir contrasenya: 1234.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'exit.
+   - Resultat esperat: Creacio de l'usuari i missatge d'exit.
+
+4. Validacio de longitud d'usuari (Valors limit/invalids):
+   - Usuari: "ab" (Longitud < 3)
+   - Contrasenya: "validPass"
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: ab.
+      4. Introduir contrasenya: validPass.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'error "Error al registrar: El nom d'usuari ha de tenir almenys 3 caracters".
+   - Resultat esperat: Error indicant que l'usuari ha de tenir almenys 3 caracters.
+
+5. Validacio de longitud de contrasenya (Valors limit/invalids):
+   - Usuari: "TestUser2"
+   - Contrasenya: "123" (Longitud < 4)
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: TestUser2.
+      4. Introduir contrasenya: 123.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'error "Error al registrar: La contrasenya ha de tenir almenys 4 caracters".
+   - Resultat esperat: Error indicant que la contrasenya ha de tenir almenys 4 caracters.
+
+- IMPORTANT: Pel següent joc de prova, cal haver executat el joc de prova #1 per a que tingui un usuari ja existent al sistema.
+6. Usuari ja existent (Validacio de duplicats):
+   - Usuari: "TestUser1" (ja existent al sistema)
+   - Contrasenya: "qualsevol"
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: TestUser1.
+      4. Introduir contrasenya: qualsevol.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'error "Error al registrar: L'usuari ja 'TestUser1' existeix".
+   - Resultat esperat: Error indicant que l'usuari ja existeix.
+
+7. Coincident de contrasenyes (Validacio de duplicats):
+   - Usuari: "testuser"
+   - Contrasenya: "qualsevol"
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Introduir usuari: testuser.
+      4. Introduir contrasenya: qualsevol.
+      5. Introduir confirmacio de contrasenya: diferent.
+      6. Clic al boto "Crear compte".
+      7. Verificar missatge d'error "Les contrasenyes no coincideixen".
+   - Resultat esperat: Error indicant que les contrasenyes no coincideixen.
+
+8. Camps buits (Valors limit/invalids):
+   - Usuari: "" (buit)
+   - Contrasenya: "" (buit)
+   - Accions:
+      1. Iniciar l'aplicacio.
+      2. Clic al boto "Crear compte nou".
+      3. Deixar el camp usuari buit.
+      4. Deixar el camp contrasenya buit.
+      5. Clic al boto "Crear compte".
+      6. Verificar missatge d'error "Camps obligatoris"
+   - Resultat esperat: Error de parametre invalid.
+
+
+Efectes estudiats:
+- Interaccio amb la GUI: Introduccio de text als camps "Usuari" i "Contrasenya".
+- Accions: 
+   - Clic al boto "Crear compte nou".
+   - Clic al boto "Crear compte".
+   - Clic al boto "Ja tinc un compte" (per tornar a la pantalla d'inici).
+- Feedback visual: 
+    - Aparicio de finestres emergents (pop-ups) amb missatges d'exit ("Usuari registrat correctament!").
+    - Aparicio de missatges d'error descriptius quan fallen les validacions (usuari massa curt, contrasenya massa curta, usuari ja existent, camps buits).
+- Persistencia: Verificacio que el nou usuari s'ha afegit correctament al fitxer usuaris/index.json despres de l'operacio exitosa.
+- Validacions: El sistema valida correctament les regles de negoci (longitud minima, duplicats, camps obligatoris).

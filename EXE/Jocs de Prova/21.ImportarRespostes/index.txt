@@ -1,0 +1,122 @@
+# Joc de Prova - Cas d'ús #21 Importar Respostes
+
+Objecte de la prova:
+Cas d'ús: Importar Respostes.
+Es prova la funcionalitat de importar les respostes a una enquesta al sistema a través de la interfície gràfica, verifiant tant l'èxit de l'operació com la gestió d'errors.
+
+Fitxers de dades necessaris:
+PREPARACIÓ DE L'ENTORN (OBLIGATORI):
+   Abans d'executar les proves, cal copiar els fitxers de dades preparats:
+   1. Tancar l'aplicació si està oberta
+   2. Copiar la carpeta "fitxers_necessaris/dades/" al directori FONTS/
+      - Windows: xcopy /E /I "fitxers_necessaris\dades" "..\..\..\..\FONTS\dades"
+      - Linux/Mac: cp -r fitxers_necessaris/dades ../../../../FONTS/
+   3. Tornar a iniciar l'aplicació
+
+Usuari preexistent per a les proves:
+   - Username: "TestUser1"
+   - Password: "password123"
+
+   - Username: "TestUser2"
+   - Password: "password123"
+
+Estructura dels fitxers de dades preparats:
+- dades/enquestes/index.json: Índex amb l'enquesta1 preexistent (per a prova #5)
+- dades/enquestes/enc_completa/: Carpeta amb les dades de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/index.json: Índex amb les preguntes de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p1.json: Pregunta 1 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p2.json: Pregunta 2 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p3.json: Pregunta 3 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p4.json: Pregunta 4 de l'enquesta1
+- dades/enquestes/enc_completa/preguntes/p5.json: Pregunta 5 de l'enquesta1
+- dades/enquestes/enc_completa/respostes/index.json: Índex amb les respostes de l'enquesta1
+- dades/enquestes/enc_completa/respostes/TestUser1.json: Resposta de l'enquesta1 feta per l'Usuari 'TestUser1'
+- dades/usuaris/index.json: Índex amb l'usuari "TestUser1" i "TestUser2"
+- dades/usuaris/TestUser1.json: Fitxer de l'usuari preexistent per iniciar sessió
+- dades/usuaris/TestUser2.json: Fitxer de l'usuari preexistent per iniciar sessió
+
+
+AQUESTS S'HAN D'IMPORTAR MANUALMENT, NO ELS COPIES A FONTS/DADES:
+- fitxers_dades/importacions/T2_resposta_enquesta_completa.json: Es una resposta a l'enquesta 'enquesta_completa' feta per l'Usuari 'TestUser2' al joc de prova 22.
+- fitxers_dades/importacions/T3_resposta_enquesta_completa.json: Es una resposta a l'enquesta 'enquesta_completa' feta per l'Usuari 'TestUser2' al joc de prova 22.
+- fitxers_dades/importacions/T4_resposta_enquesta_completa_format_errorni.json: Es una resposta a l'enquesta 'enquesta_completa' feta per l'Usuari 'TestUser2' al joc de prova 22.
+- fitxers_dades/importacions/T5_resposta_enquesta_completa_preguntes_extra.json: Es una resposta a l'enquesta 'enquesta_completa' feta per l'Usuari 'TestUser2' al joc de prova 22.
+- fitxers_dades/importacions/exemple_resposta_clustering.json: Exemple de resposta a l'enquesta 'enquesta_completa' feta per l'Usuari 'TestUser2' al joc de prova 22.
+
+Credencials de login:
+- Usuari: TestUser2
+- Contrasenya: password123
+
+El sistema utilitza internament per a la persistència:
+- respostes/index.json: Per emmagatzemar la llista d'usuaris i verificar duplicats. Emmagatzema objectes de la classe Usuari.
+
+Valors estudiats:
+
+Es realitzen proves de caixa negra (Black Box) centrades en les particions d'equivalència i valors límit definits per les regles de negoci del domini.
+
+Conjunts de dades de comportament homogeni:
+1. Importar resposta a enquesta vàlida(Cas d'èxit): 
+   - Precondicions: Existeix una enquesta enc_completa.
+   - Accions: 
+      1. Login amb TestUser2 i password123
+      2. Clic al botó "Gestionar les Meves Respostes".
+      3. Clic a Importar Respostes.
+      4. Resultat esperat: Aparició de la finestra per seleccionar arxiu per importar respostes.
+      5. Selecciona el arxiu "T2_resposta_enquesta_completa.json".
+      6. Clic a OK.
+      7. Resultat esperat: Aparició de finestra de confirmació amb missatge d'èxit.
+
+2. Importar resposta a enquesta no vàlida(Cas d'error): 
+   - Precondicions: Existeix una enquesta.
+   - Accions: 
+      1. Login amb TestUser2 i password123
+      2. Clic al botó "Gestionar les Meves Respostes".
+      3. Clic a Importar Respostes.
+      4. Resultat esperat: Aparició de la finestra per seleccionar arxiu per importar respostes.
+      5. Selecciona el arxiu "exemple_resposta_clustering.json".
+      6. Clic a OK.
+      7. Resultat esperat: Aparició de finestra de confirmació amb missatge d'error indicant que no existeix l'enquesta corresponent.
+
+3. Importar Respostes d'usuaris no existents(Cas d'error): 
+   - Precondicions: Existeix una enquesta.
+   - Accions: 
+      1. Login amb TestUser2 i password123
+      2. Clic al botó "Gestionar les Meves Respostes".
+      3. Clic a Importar Respostes.
+      4. Resultat esperat: Aparició de la finestra per seleccionar arxiu per importar respostes.
+      5. Selecciona el arxiu "T3_resposta_enquesta_completa.json".
+      6. Clic a OK.
+      7. Resultat esperat: Aparició de finestra de confirmació amb missatge d'error indicant que no s'ha pogut importar cap resposta valida.
+
+4. Importar Respostes en format erroni(Cas d'error): 
+   - Precondicions: Existeix una enquesta.
+   - Accions: 
+      1. Login amb TestUser2 i password123
+      2. Clic al botó "Gestionar les Meves Respostes".
+      3. Clic a Importar Respostes.
+      4. Resultat esperat: Aparició de la finestra per seleccionar arxiu per importar respostes.
+      5. Selecciona el arxiu "T4_resposta_enquesta_completa_format_errorni.json".
+      6. Clic a OK.
+      7. Resultat esperat: Aparició de finestra de confirmació amb missatge d'error indicant que no s'ha pogut importar cap resposta valida.
+
+5. Importar Respostes amb preguntes no existents a l'enquesta(Cas d'error): 
+   - Precondicions: Existeix una enquesta.
+   - Accions: 
+      1. Login amb TestUser2 i password123
+      2. Clic al botó "Gestionar les Meves Respostes".
+      3. Clic a Importar Respostes.
+      4. Resultat esperat: Aparició de la finestra per seleccionar arxiu per importar respostes.
+      5. Selecciona el arxiu "T5_respostaenquesta_completa_preguntes_extra.json".
+      6. Clic a OK.
+      7. Resultat esperat: Aparició de finestra de confirmació amb missatge d'error indicant que no s'ha pogut importar cap resposta valida.
+
+Efectes estudiats:
+- Interacció amb la GUI: Selecció de la enquesta a importar desde la finestra de archius i clic a botons.
+- Accions: 
+    - Clic al botó "Gestionar les Meves Respostes"
+    - Clic a "Importar Respostes".
+    - Clic a "OK"
+- Feedback visual: 
+    - Aparició de finestres emergents (pop-ups) o etiquetes de text amb missatges indicant el resultat de la operació.
+    - Aparició de missatges d'error descriptius quan fallen les validacions.
+- Persistència: Validació de la importació de les respostes a les enquestes al fitxer de persistència corresponent.

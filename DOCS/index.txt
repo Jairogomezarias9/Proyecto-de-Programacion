@@ -1,0 +1,20 @@
+DIRECTORI: ENTREGA/DOCS
+
+Descripció: Documentació del projecte - Sistema de Gestió d'Enquestes amb Clustering
+
+Contingut:
+
+index.txt
+  Aquest fitxer. Índex del directori DOCS.
+
+membres.txt
+  Llista dels membres del grup amb els correus electrònics.
+
+Autoria.txt
+  Documentació detallada de l'autoria de cada fitxer del projecte.
+
+MANUAL D'USUARI.pdf
+  Manual d'usuari del sistema amb instruccions d'ús de l'aplicació.
+
+javadoc/
+  Documentació JavaDoc generada automàticament del codi font.
